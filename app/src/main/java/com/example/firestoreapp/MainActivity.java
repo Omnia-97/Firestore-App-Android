@@ -16,6 +16,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class MainActivity extends AppCompatActivity {
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final DocumentReference docRef = db.collection("Users").document("94GPLHfe0jIpNCjgo8sx");
+    private final CollectionReference collectionReference = db.collection("Users");
     private Button saveBtn;
     private Button updateBtn;
     private Button deleteBtn;
@@ -23,10 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView textView;
     private EditText nameET;
     private EditText emailET;
-
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private final DocumentReference docRef = db.collection("Users").document("94GPLHfe0jIpNCjgo8sx");
-    private final CollectionReference collectionReference = db.collection("Users");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +100,8 @@ public class MainActivity extends AppCompatActivity {
         docRef.update("email", email);
 
     }
-    private void deleteAll(){
+
+    private void deleteAll() {
         docRef.delete();
     }
 }
