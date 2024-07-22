@@ -58,6 +58,12 @@ public class MainActivity extends AppCompatActivity {
                 updateSpecificDocument();
             }
         });
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteAll();
+            }
+        });
 
     }
 
@@ -94,5 +100,8 @@ public class MainActivity extends AppCompatActivity {
         docRef.update("name", name);
         docRef.update("email", email);
 
+    }
+    private void deleteAll(){
+        docRef.delete();
     }
 }
