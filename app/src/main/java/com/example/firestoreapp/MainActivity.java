@@ -1,12 +1,12 @@
 package com.example.firestoreapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -24,9 +24,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText nameET;
     private EditText emailET;
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private DocumentReference docRef = db.collection("Users").document("Friends");
-    private CollectionReference collectionReference = db.collection("Users");
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final DocumentReference docRef = db.collection("Users").document("94GPLHfe0jIpNCjgo8sx");
+    private final CollectionReference collectionReference = db.collection("Users");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +46,25 @@ public class MainActivity extends AppCompatActivity {
                 saveDataToNewDocument();
             }
         });
-         readBtn.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 getAllDocumentsInCollections();
-             }
-         });
+        readBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAllDocumentsInCollections();
+            }
+        });
+        updateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateSpecificDocument();
+            }
+        });
 
     }
-    private void saveDataToNewDocument(){
+
+    private void saveDataToNewDocument() {
         String name = nameET.getText().toString();
         String email = emailET.getText().toString();
-        Friend friend = new Friend(name , email);
+        Friend friend = new Friend(name, email);
         collectionReference.add(friend).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
@@ -65,18 +72,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    private void getAllDocumentsInCollections(){
+
+    private void getAllDocumentsInCollections() {
         collectionReference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 String data = "";
-                for(QueryDocumentSnapshot snapshots : queryDocumentSnapshots){
+                for (QueryDocumentSnapshot snapshots : queryDocumentSnapshots) {
                     Friend friend = snapshots.toObject(Friend.class);
-                     data += "Name : " + friend.getName() + " Email : " + friend.getEmail() + "\n";
+                    data += "Name : " + friend.getName() + " Email : " + friend.getEmail() + "\n";
                 }
                 textView.setText(data);
 
             }
         });
+    }
+
+    private void updateSpecificDocument() {
+        String name = nameET.getText().toString();
+        String email = emailET.getText().toString();
+        docRef.update("name", name);
+        docRef.update("email", email);
+
     }
 }
